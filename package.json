@@ -1,0 +1,29 @@
+{
+  "name": "vue-clock-simple",
+  "version": "1.0.0",
+  "description": "A Vue.js component that displays a scratchcard",
+  "main": "dist/vue-scratchcard.js",
+  "scripts": {
+    "build": "rimraf ./dist && webpack --config ./webpack.config.js"
+  },
+  "author": "Xie Chenhong <chenhong.xie@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xch91/vue-scratchcard"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-stage-3": "^6.24.1",
+    "css-loader": "^0.28.7",
+    "rimraf": "^2.6.1",
+    "vue": "^2.5.11",
+    "vue-loader": "^13.0.5",
+    "vue-style-loader": "^3.0.1",
+    "vue-template-compiler": "^2.5.2",
+    "webpack": "^3.6.0",
+    "webpack-merge": "^4.1.1"
+  }
+}
