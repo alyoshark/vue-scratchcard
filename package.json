@@ -1,5 +1,5 @@
 {
-  "name": "vue-clock-simple",
+  "name": "vue-scrachcard",
   "version": "1.0.0",
   "description": "A Vue.js component that displays a scratchcard",
   "main": "dist/vue-scratchcard.js",
