@@ -1,16 +1,3 @@
-# Vue Scratch Card
-
-*With majority of the code shamelessly stolen from [a codepen by Andre Ruffert](https://codepen.io/andreruffert/pen/pvqly) and [React ScratchCard](https://github.com/aleksik/react-scratchcard)*
-
-## Installation
-
-```
-$ npm install vue-scratchcard
-```
-
-## Example Usage
-
-```html
 <template>
   <div id="app">
     <scratch-card :cardWidth="cardWidth"
@@ -52,16 +39,3 @@ export default {
   color: red;
 }
 </style>
-```
-
-## Parameters:
-
-| Parameter     | Type     | Description
-|---------------|----------|------------
-| imageUrl      | String   | cover image url
-| brushUrl      | String   | brush image url
-| cardWidth     | Number   | card width
-| cardHeight    | Number   | card height
-| finishPercent | Number   | revelation percentage until removing cover
-| forceReveal   | Boolean  | remove cover when changed from false -> true
-| onComplete    | Function | callback on cover revelation

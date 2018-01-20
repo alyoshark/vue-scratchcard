@@ -4,6 +4,7 @@
   "description": "A Vue.js component that displays a scratchcard",
   "main": "dist/vue-scratchcard.js",
   "scripts": {
+    "dev": "rimraf ./dev && webpack-dev-server --config ./webpack-dev.config.js --hot",
     "build": "rimraf ./dist && webpack --config ./webpack.config.js"
   },
   "author": "Xie Chenhong <chenhong.xie@gmail.com>",
@@ -18,12 +19,14 @@
     "babel-preset-env": "^1.6.0",
     "babel-preset-stage-3": "^6.24.1",
     "css-loader": "^0.28.7",
+    "file-loader": "^1.1.6",
     "rimraf": "^2.6.1",
     "vue": "^2.5.11",
     "vue-loader": "^13.0.5",
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.5.2",
     "webpack": "^3.6.0",
+    "webpack-dev-server": "^2.11.0",
     "webpack-merge": "^4.1.1"
   }
 }

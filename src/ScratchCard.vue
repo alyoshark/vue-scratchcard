@@ -51,6 +51,8 @@ export default {
     cardWidth: Number,
     cardHeight: Number,
     finishPercent: Number,
+    forceReveal: Boolean,
+    onComplete: Function,
   },
 
   data() {
@@ -135,11 +137,19 @@ export default {
     },
 
     handlePercentage(filledInPixels = 0) {
-      if (filledInPixels > this.finishPercent) {
-        this.canvas.parentNode.removeChild(this.canvas);
-        this.isFinished = true;
-        if (this.onComplete) this.onComplete();
-      }
+      if (filledInPixels > this.finishPercent) this.reveal();
+    },
+
+    reveal() {
+      this.canvas.parentNode.removeChild(this.canvas);
+      this.isFinished = true;
+      if (this.onComplete) this.onComplete();
+    },
+  },
+
+  watch: {
+    forceReveal(val) {
+      if (val) this.reveal();
     },
   },
 
