@@ -141,10 +141,11 @@ export default {
     },
 
     reveal() {
-      if(!this.isFinished){
+      if (!this.isFinished) {
         this.canvas.parentNode.removeChild(this.canvas);
         if (this.onComplete) this.onComplete();
       }
+      
       this.isFinished = true;
     },
   },
