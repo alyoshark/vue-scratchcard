@@ -24,11 +24,9 @@ function getFilledPercent(ctx, width, height, stride) {
 
 function getMouse(e, canvas) {
   const { left, top } = canvas.getBoundingClientRect();
-  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
   return {
-    x: (e.pageX || e.touches[0].clientX) - left - scrollLeft,
-    y: (e.pageY || e.touches[0].clientY) - top - scrollTop,
+    x: (e.pageX || e.touches[0].clientX) - left,
+    y: (e.pageY || e.touches[0].clientY) - top,
   };
 }
 
