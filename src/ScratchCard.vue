@@ -24,10 +24,14 @@ function getFilledPercent(ctx, width, height, stride) {
 
 function getMouse(e, canvas) {
   const { left, top } = canvas.getBoundingClientRect();
-  return {
-    x: (e.pageX || e.touches[0].clientX) - left,
-    y: (e.pageY || e.touches[0].clientY) - top,
-  };
+  const touch = e.touches && e.touches[0];
+  if (touch) {
+    return { x: touch.clientX - left, y: touch.clientY - top };
+  } else {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+    return { x: e.pageX - left - scrollLeft, y: e.pageY - top - scrollTop };
+  }
 }
 
 function distanceBetween(point1, point2) {
