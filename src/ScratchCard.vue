@@ -1,9 +1,9 @@
 <template>
-  <div class="card" :style="`width:${cardWidth}px; height:${cardHeight}px`">
+  <div class="scratchcard" :style="`width:${cardWidth}px; height:${cardHeight}px`">
     <canvas @mousedown="handleMouseDown" @mousemove="handleMouseMove" @mouseup="handleMouseUp"
             @touchstart="handleMouseDown" @touchmove="handleMouseMove" @touchend="handleMouseUp"
-            ref="canvas" class="card-overlay"></canvas>
-    <div v-if="overlayLoaded" class="card-content">
+            ref="canvas" class="scratchcard-overlay"></canvas>
+    <div v-if="overlayLoaded" class="scratchcard-content">
       <slot></slot>
     </div>
   </div>
@@ -167,19 +167,19 @@ export default {
 </script>
 
 <style scoped>
-.card {
+.scratchcard {
   position: relative;
   display: block;
 }
 
-.card > * {
+.scratchcard > * {
   position: absolute;
   width: 100%;
   height: 100%;
   display: block;
 }
 
-.card-overlay {
+.scratchcard-overlay {
   z-index: 1;
 }
 </style>
