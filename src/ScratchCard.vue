@@ -147,7 +147,6 @@ export default {
         this.canvas.parentNode.removeChild(this.canvas);
         if (this.onComplete) this.onComplete();
       }
-      
       this.isFinished = true;
     },
   },

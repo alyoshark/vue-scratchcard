@@ -13,7 +13,8 @@ $ npm install vue-scratchcard
 ```html
 <template>
   <div id="app">
-    <scratch-card :cardWidth="cardWidth"
+    <scratch-card :key="renderCount"
+                  :cardHeight="cardHeight"
                   :cardHeight="cardHeight"
                   :finishPercent="finishPercent"
                   imageUrl="https://avatars2.githubusercontent.com/u/1077546?s=460&v=4"
@@ -22,6 +23,7 @@ $ npm install vue-scratchcard
       <h2 class="card-content">This is a highly secretive message!!!</h2>
     </scratch-card>
     <button @click="forceReveal = true">Force Reveal!</button>
+    <button @click="renderCount++">Force Reset</button>
   </div>
 </template>
 
@@ -37,6 +39,7 @@ export default {
 
   data() {
     return {
+      renderCount: 0,
       cardWidth: 300,
       cardHeight: 300,
       finishPercent: 70,
@@ -65,3 +68,6 @@ export default {
 | finishPercent | Number   | revelation percentage until removing cover
 | forceReveal   | Boolean  | remove cover when changed from false -> true
 | onComplete    | Function | callback on cover revelation
+
+As a Vue practice, to force reset a scratchcard, provide a `key` attribute and change its value.
+Just as explained in [this post](http://michaelnthiessen.com/force-re-render/).
