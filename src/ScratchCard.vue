@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import DrawImageCover from "canvas-image-cover";
+
 function getFilledPercent(ctx, width, height, stride) {
   if (!stride || stride < 1) stride = 1;
   const pixels = ctx.getImageData(0, 0, width, height);
@@ -85,12 +87,12 @@ export default {
 
     drawOverlay() {
       if(this.image.src) {
-        this.ctx.drawImage(this.image, 0, 0, this.cardWidth, this.cardHeight);
+        DrawImageCover(this.image, 0, 0, this.cardWidth, this.cardHeight).render(this.ctx);
       } else {
           this.image.crossOrigin = 'Anonymous';
           this.image.src = this.imageUrl;
           this.image.onload = () => {
-            this.ctx.drawImage(this.image, 0, 0, this.cardWidth, this.cardHeight);
+            DrawImageCover(this.image, 0, 0, this.cardWidth, this.cardHeight).render(this.ctx);
             this.overlayLoaded = true;
           };
         }

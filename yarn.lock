@@ -1008,6 +1008,10 @@ caniuse-lite@^1.0.30000784:
   version "1.0.30000789"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000789.tgz#2e3d937b267133f63635ef7f441fac66360fc889"
 
+canvas-image-cover@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/canvas-image-cover/-/canvas-image-cover-2.0.0.tgz#c8e67ff558ea516c7cc68f9eebe1b42da5232ef3"
+
 caseless@~0.12.0:
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
