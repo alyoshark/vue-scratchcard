@@ -1,9 +1,9 @@
 <template>
-  <div class="scratchcard" :style="`width:${cardWidth}px; height:${cardHeight}px`">
+  <div class="scratchcard" :style="`height:${cardHeight}px`">
     <canvas @mousedown="handleMouseDown" @mousemove="handleMouseMove" @mouseup="handleMouseUp"
             @touchstart="handleMouseDown" @touchmove="handleMouseMove" @touchend="handleMouseUp"
             ref="canvas" class="scratchcard-overlay"></canvas>
-    <div v-if="overlayLoaded" class="scratchcard-content">
+    <div ref="content" class="scratchcard-content" :style="{visibility:overlayLoaded ? 'visible' : 'hidden' }">
       <slot></slot>
     </div>
   </div>
@@ -50,13 +50,10 @@ export default {
   props: {
     imageUrl: String,
     brushUrl: String,
-    cardWidth: Number,
-    cardHeight: Number,
     finishPercent: Number,
     forceReveal: Boolean,
     onComplete: Function,
   },
-
   data() {
     return {
       overlayLoaded: false,
@@ -65,28 +62,39 @@ export default {
       canvas: undefined,
       ctx: undefined,
       lastPoint: undefined,
+      cardWidth: undefined,
+      cardHeight: undefined,
       brush: new Image(),
+      image: new Image()
     };
   },
 
   methods: {
+    setSize(e) {
+      const rect = this.$refs.content.getBoundingClientRect();
+      if (this.cardWidth !== rect.width) {
+        this.cardWidth = this.canvas.width = rect.width;
+        this.cardHeight = this.canvas.height = rect.height;
+        this.drawOverlay();
+      }
+    },
     initCanvas() {
       this.canvas = this.$refs.canvas;
-      this.canvas.width = this.cardWidth;
-      this.canvas.height = this.cardHeight;
-      this.ctx = this.canvas.getContext('2d');
+      this.ctx = this.canvas.getContext("2d");
     },
 
-    drawImage() {
-      const image = new Image();
-      image.crossOrigin = 'Anonymous';
-      image.src = this.imageUrl;
-      image.onload = () => {
-        this.ctx.drawImage(image, 0, 0, this.cardWidth, this.cardHeight);
-        this.overlayLoaded = true;
-      };
+    drawOverlay() {
+      if(this.image.src) {
+        this.ctx.drawImage(this.image, 0, 0, this.cardWidth, this.cardHeight);
+      } else {
+          this.image.crossOrigin = 'Anonymous';
+          this.image.src = this.imageUrl;
+          this.image.onload = () => {
+            this.ctx.drawImage(this.image, 0, 0, this.cardWidth, this.cardHeight);
+            this.overlayLoaded = true;
+          };
+        }
     },
-
     prepBrush() {
       if (this.brushUrl) {
         this.brush.crossOrigin = 'Anonymous';
@@ -158,10 +166,15 @@ export default {
   },
 
   mounted() {
+    window.addEventListener("resize", this.setSize);
     this.initCanvas();
-    this.drawImage();
+    this.setSize();
+    this.drawOverlay();
     this.prepBrush();
   },
+  beforeDestroy: function() {
+    window.removeEventListener("resize", this.setSize);
+  }
 };
 </script>
 
@@ -169,16 +182,16 @@ export default {
 .scratchcard {
   position: relative;
   display: block;
+  overflow: hidden;
 }
 
-.scratchcard > * {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  display: block;
+.scratchcard-content {
+  display: inline-block;
+  max-width: 100%;
 }
 
 .scratchcard-overlay {
+  position: absolute;
   z-index: 1;
 }
 </style>
