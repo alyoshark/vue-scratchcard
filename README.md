@@ -14,7 +14,7 @@ $ npm install vue-scratchcard
 <template>
   <div id="app">
     <scratch-card :key="renderCount"
-                  :cardHeight="cardHeight"
+                  :cardWidth="cardWidth"
                   :cardHeight="cardHeight"
                   :finishPercent="finishPercent"
                   imageUrl="https://avatars2.githubusercontent.com/u/1077546?s=460&v=4"
