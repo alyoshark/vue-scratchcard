@@ -54,6 +54,7 @@ export default {
     cardHeight: Number,
     finishPercent: Number,
     forceReveal: Boolean,
+    onComplete: Function,
   },
 
   data() {
@@ -145,6 +146,7 @@ export default {
       if (!this.isFinished) {
         this.canvas.parentNode.removeChild(this.canvas);
         this.$emit("complete");
+        if (this.onComplete) this.onComplete();
       }
       this.isFinished = true;
     },
@@ -160,6 +162,10 @@ export default {
     this.initCanvas();
     this.drawImage();
     this.prepBrush();
+    if (typeof this.onComplete !== 'undefined') {
+      // eslint-disable-next-line
+      console.warn('[vue-scratchcard] - `onComplete` call is deprecated in favor of `complete` event');
+    }
   },
 };
 </script>

@@ -6,7 +6,8 @@
                   :finishPercent="finishPercent"
                   imageUrl="https://avatars2.githubusercontent.com/u/1077546?s=460&v=4"
                   :brushUrl="brushUrl"
-                  :forceReveal="forceReveal">
+                  :forceReveal="forceReveal"
+                  @complete="onComplete">
       <h2 class="card-content">This is a highly secretive message!!!</h2>
     </scratch-card>
     <button @click="forceReveal = true">Force Reveal!</button>
@@ -33,6 +34,12 @@ export default {
       brushUrl: BRUSH,
       forceReveal: false,
     };
+  },
+
+  methods: {
+    onComplete() {
+      window.alert('Content revealed!');
+    },
   },
 };
 </script>
