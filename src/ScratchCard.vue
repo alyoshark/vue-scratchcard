@@ -54,7 +54,6 @@ export default {
     cardHeight: Number,
     finishPercent: Number,
     forceReveal: Boolean,
-    onComplete: Function,
   },
 
   data() {
@@ -145,7 +144,7 @@ export default {
     reveal() {
       if (!this.isFinished) {
         this.canvas.parentNode.removeChild(this.canvas);
-        if (this.onComplete) this.onComplete();
+        this.$emit("complete");
       }
       this.isFinished = true;
     },
