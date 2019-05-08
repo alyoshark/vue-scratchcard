@@ -14,7 +14,7 @@ $ npm install vue-scratchcard
 <template>
   <div id="app">
     <scratch-card :key="renderCount"
-                  :cardHeight="cardHeight"
+                  :cardWidth="cardWidth"
                   :cardHeight="cardHeight"
                   :finishPercent="finishPercent"
                   imageUrl="https://avatars2.githubusercontent.com/u/1077546?s=460&v=4"
@@ -59,15 +59,28 @@ export default {
 
 ## Parameters:
 
-| Parameter     | Type     | Description
-|---------------|----------|------------
-| imageUrl      | String   | cover image url
-| brushUrl      | String   | brush image url
-| cardWidth     | Number   | card width
-| cardHeight    | Number   | card height
-| finishPercent | Number   | revelation percentage until removing cover
-| forceReveal   | Boolean  | remove cover when changed from false -> true
-| onComplete    | Function | callback on cover revelation
+| Parameter                 | Type     | Description
+|---------------------------|----------|------------
+| imageUrl                  | String   | cover image url
+| brushUrl                  | String   | brush image url
+| cardWidth                 | Number   | card width
+| cardHeight                | Number   | card height
+| finishPercent             | Number   | revelation percentage until removing cover
+| forceReveal               | Boolean  | remove cover when changed from false -> true
+| @complete (new in 1.2.0)  | Event    | event emitted on cover revelation
+| _onComplete (deprecated)_ | Function | callback on cover revelation
 
 As a Vue practice, to force reset a scratchcard, provide a `key` attribute and change its value.
 Just as explained in [this post](http://michaelnthiessen.com/force-re-render/).
+
+
+## Change Log:
+
+### [1.2.0] - 2019-05-04
+
+- `@complete` event for cover revelation (by [NahroTo](https://github.com/NahroTo))
+- Deprecate `onComplete` handler
+
+### [before 1.2.0]
+
+- Untracked 😂
