@@ -7,13 +7,12 @@
     "strict": true,
     "esModuleInterop": true,
     "isolatedModules": true,
+    "outDir": "./dist",
     "lib": ["ESNext", "DOM"]
   },
   "include": [
-    "src/*.ts",
-    "src/*.d.ts",
-    "example/*.ts",
-    "example/*.vue",
+    "src/**/*.ts",
+    "src/**/*.d.ts",
     "vite.config.ts"
   ],
   "exclude": [

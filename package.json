@@ -4,7 +4,8 @@
   "description": "A Vue.js component that displays a scratchcard",
   "main": "dist/vue-scratchcard.js",
   "scripts": {
-    "dev": "vite"
+    "dev": "vite",
+    "build": "vite build"
   },
   "author": "Xie Chenhong <chenhong.xie@gmail.com>",
   "license": "MIT",

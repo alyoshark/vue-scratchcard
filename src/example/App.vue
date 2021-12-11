@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import ScratchCard from '../src/ScratchCard';
+import ScratchCard from '../ScratchCard';
 import brushUrl from './brush';
 
 const renderCount = ref(0);
