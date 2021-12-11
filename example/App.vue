@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <scratch-card :key="renderCount"
+    <ScratchCard :key="renderCount"
                   :cardWidth="cardWidth"
                   :cardHeight="cardHeight"
                   :finishPercent="finishPercent"
@@ -9,39 +9,25 @@
                   :forceReveal="forceReveal"
                   @complete="onComplete">
       <h2 class="card-content">This is a highly secretive message!!!</h2>
-    </scratch-card>
+    </ScratchCard>
     <button @click="forceReveal = true">Force Reveal!</button>
     <button @click="renderCount++">Force Reset</button>
   </div>
 </template>
 
-<script>
-import ScratchCard from '../src/ScratchCard.vue';
-import BRUSH from './brush.png';
+<script setup lang="ts">
+import { ref } from 'vue';
+import ScratchCard from '../src/ScratchCard';
+import brushUrl from './brush';
 
-export default {
-  name: 'app',
-  components: {
-    ScratchCard,
-  },
+const renderCount = ref(0);
+const forceReveal = ref(false)
 
-  data() {
-    return {
-      renderCount: 0,
-      cardWidth: 300,
-      cardHeight: 300,
-      finishPercent: 70,
-      brushUrl: BRUSH,
-      forceReveal: false,
-    };
-  },
+const cardWidth = 300;
+const cardHeight = 300;
+const finishPercent = 70;
 
-  methods: {
-    onComplete() {
-      window.alert('Content revealed!');
-    },
-  },
-};
+const onComplete = () => window.alert('Content revealed!');
 </script>
 
 <style scoped>

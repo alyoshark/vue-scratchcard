@@ -2,6 +2,10 @@
 
 *With majority of the code shamelessly stolen from [a codepen by Andre Ruffert](https://codepen.io/andreruffert/pen/pvqly) and [React ScratchCard](https://github.com/aleksik/react-scratchcard)*
 
+
+> `master` branch is currently under construction to migrate to Vue 3; for Vue 2 (and untested but presumably Vue 3 also) compatible code, visit [v1.x branch](https://github.com/xch91/vue-scratchcard/tree/v1.x)
+
+
 ## Installation
 
 ```
@@ -68,7 +72,6 @@ export default {
 | finishPercent             | Number   | revelation percentage until removing cover
 | forceReveal               | Boolean  | remove cover when changed from false -> true
 | @complete (new in 1.2.0)  | Event    | event emitted on cover revelation
-| _onComplete (deprecated)_ | Function | callback on cover revelation
 
 As a Vue practice, to force reset a scratchcard, provide a `key` attribute and change its value.
 Just as explained in [this post](http://michaelnthiessen.com/force-re-render/).
