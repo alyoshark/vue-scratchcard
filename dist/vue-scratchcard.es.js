@@ -1,159 +1,106 @@
-import { defineComponent, computed, ref, onMounted, watch, h } from "vue";
-const calcCoverPercent = (ctx, width, height, stride) => {
-  if (!stride || stride < 1)
-    stride = 1;
-  const pixels = ctx.getImageData(0, 0, width, height);
-  const total = pixels.data.length / stride;
-  let count = 0;
-  for (let i = 0; i < pixels.data.length; i += stride) {
-    if (Number(pixels.data[i]) === 0)
-      count++;
-  }
-  return Math.round(count / total * 100);
-};
-const getCoord = (canvas, e) => {
-  const { left, top } = canvas.getBoundingClientRect();
-  const touch = e.touches && e.touches[0];
-  if (touch)
-    return { x: touch.clientX - left, y: touch.clientY - top };
-  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-  return { x: e.pageX - left - scrollLeft, y: e.pageY - top - scrollTop };
-};
-const distanceBetween = (p1, p2) => Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
-const angleBetween = (p1, p2) => Math.atan2(p2.x - p1.x, p2.y - p1.y);
-const scratchAt = (ctx, p, brush) => {
-  const { x, y } = p;
-  if (brush) {
-    return ctx.drawImage(brush, x - brush.width / 2, y - brush.height / 2);
-  }
-  ctx.beginPath();
-  ctx.arc(x, y, 25, 0, 2 * Math.PI, false);
-  ctx.fill();
-};
-const drawLine = (ctx, lp, cp, brush) => {
-  const distance = distanceBetween(lp, cp);
-  const angle = angleBetween(lp, cp);
-  let { x, y } = lp;
-  for (let i = 0; i < distance; i++) {
-    x = lp.x + Math.sin(angle) * i;
-    y = lp.y + Math.cos(angle) * i;
-    ctx.globalCompositeOperation = "destination-out";
-    scratchAt(ctx, { x, y }, brush);
-  }
-};
-const styleConcat = (style) => Object.keys(style).map((k) => `${k}:${style[k]}`).concat(";");
-const styleBlockFiller = {
+import { defineComponent as q, computed as B, ref as h, onMounted as E, watch as H, h as m } from "vue";
+const L = (e, t, a, r) => {
+  const o = e.getImageData(0, 0, t, a), s = o.data.length / r;
+  let l = 0;
+  for (let c = 0; c < o.data.length; c += r)
+    Number(o.data[c]) === 0 && l++;
+  return Math.round(l / s * 100);
+}, M = (e, t) => {
+  const { left: a, top: r } = e.getBoundingClientRect(), o = t.touches && t.touches[0];
+  if (o) return { x: o.clientX - a, y: o.clientY - r };
+  const s = window.pageYOffset || document.documentElement.scrollTop, l = window.pageXOffset || document.documentElement.scrollLeft;
+  return { x: t.pageX - a - l, y: t.pageY - r - s };
+}, N = (e, t) => Math.sqrt(Math.pow(t.x - e.x, 2) + Math.pow(t.y - e.y, 2)), S = (e, t) => Math.atan2(t.x - e.x, t.y - e.y), T = (e, t, a) => {
+  const { x: r, y: o } = t;
+  if (a)
+    return e.drawImage(a, r - a.width / 2, o - a.height / 2);
+  e.beginPath(), e.arc(r, o, 25, 0, 2 * Math.PI, !1), e.fill();
+}, U = (e, t, a, r) => {
+  const o = N(t, a), s = S(t, a);
+  let { x: l, y: c } = t;
+  for (let u = 0; u < o; u++)
+    l = t.x + Math.sin(s) * u, c = t.y + Math.cos(s) * u, e.globalCompositeOperation = "destination-out", T(e, { x: l, y: c }, r);
+}, y = (e) => Object.keys(e).map((t) => `${t}:${e[t]}`).concat(";"), I = {
   position: "absolute",
   width: "100%",
   height: "100%",
   display: "block"
-};
-const emptyCanvas = document.createElement("canvas");
-const emptyContext = emptyCanvas.getContext("2d");
-var ScratchCard = defineComponent({
+}, O = document.createElement("canvas"), W = O.getContext("2d"), $ = q({
   emits: ["complete"],
   props: {
-    imageUrl: { type: String, required: true },
-    cardWidth: { type: Number, required: true },
-    cardHeight: { type: Number, required: true },
-    finishPercent: { type: Number, required: true },
-    forceReveal: { type: Boolean, default: false },
+    imageUrl: { type: String, required: !0 },
+    cardWidth: { type: Number, required: !0 },
+    cardHeight: { type: Number, required: !0 },
+    finishPercent: { type: Number, required: !0 },
+    forceReveal: { type: Boolean, default: !1 },
     brushUrl: String
   },
-  setup(props, { slots, emit }) {
-    const styleSize = computed(() => ({
+  setup(e, { slots: t, emit: a }) {
+    const r = B(() => ({
       position: "relative",
       display: "block",
-      width: `${props.cardWidth}px`,
-      height: `${props.cardHeight}px`
-    }));
-    const overlayLoaded = ref(false);
-    const isDrawing = ref(false);
-    const isFinished = ref(false);
-    const canvas = ref(emptyCanvas);
-    const ctx = ref(emptyContext);
-    const lastPoint = ref({ x: 0, y: 0 });
-    const image = new Image();
-    image.crossOrigin = "Anonymous";
-    image.src = props.imageUrl;
-    const overlayLoadedCb = () => {
-      var _a;
-      (_a = ctx.value) == null ? void 0 : _a.drawImage(image, 0, 0, props.cardWidth, props.cardHeight);
-      overlayLoaded.value = true;
+      width: `${e.cardWidth}px`,
+      height: `${e.cardHeight}px`
+    })), o = h(!1), s = h(!1), l = h(!1), c = h(O), u = h(W), g = h({ x: 0, y: 0 }), f = new Image();
+    f.crossOrigin = "Anonymous", f.src = e.imageUrl;
+    const P = () => {
+      var n;
+      (n = u.value) == null || n.drawImage(f, 0, 0, e.cardWidth, e.cardHeight), o.value = !0;
+    }, v = new Image();
+    e.brushUrl && (v.crossOrigin = "Anonymous", v.src = e.brushUrl);
+    const w = () => {
+      var i;
+      const n = c.value;
+      l.value || ((i = n == null ? void 0 : n.parentNode) == null || i.removeChild(n), a("complete")), l.value = !0;
+    }, C = (n) => {
+      s.value = !0, g.value = M(c.value, n);
+    }, x = () => {
+      s.value = !1;
+    }, b = (n) => {
+      if (!s.value) return;
+      n.preventDefault();
+      const i = M(c.value, n), p = g.value, d = u.value;
+      if (!d) return;
+      U(d, p, i, v), g.value = i, L(d, e.cardWidth, e.cardHeight, 32) > e.finishPercent && w();
     };
-    const brush = new Image();
-    if (props.brushUrl) {
-      brush.crossOrigin = "Anonymous";
-      brush.src = props.brushUrl;
-    }
-    const reveal = () => {
-      var _a;
-      const cv = canvas.value;
-      if (!isFinished.value) {
-        (_a = cv == null ? void 0 : cv.parentNode) == null ? void 0 : _a.removeChild(cv);
-        emit("complete");
-      }
-      isFinished.value = true;
-    };
-    const onMousedown = (e) => {
-      isDrawing.value = true;
-      lastPoint.value = getCoord(canvas.value, e);
-    };
-    const onMouseup = () => {
-      isDrawing.value = false;
-    };
-    const onMousemove = (e) => {
-      if (!isDrawing.value)
-        return;
-      e.preventDefault();
-      const cp = getCoord(canvas.value, e);
-      const lp = lastPoint.value;
-      const c = ctx.value;
-      if (!c)
-        return;
-      drawLine(c, lp, cp, brush);
-      lastPoint.value = cp;
-      const pct = calcCoverPercent(c, props.cardWidth, props.cardHeight, 32);
-      if (pct > props.finishPercent)
-        reveal();
-    };
-    onMounted(() => {
-      var _a;
-      const c = (_a = canvas.value) == null ? void 0 : _a.getContext("2d");
-      if (!c)
-        throw Error(`can't start a CanvasRenderingContext2D from ${canvas.value}`);
-      ctx.value = c;
-      image.onload = overlayLoadedCb;
-    });
-    watch(() => props.forceReveal, (val) => val && reveal());
-    return () => {
-      const defaultSlot = slots.default;
-      if (!defaultSlot)
-        throw Error("please pass a default content slot");
-      const renderContent = h("div", { style: styleConcat(styleBlockFiller) }, defaultSlot());
-      const renderCanvas = h("canvas", {
-        style: styleConcat(styleBlockFiller),
-        onMousedown,
-        onMousemove,
-        onMouseup,
-        onTouchstart: onMousedown,
-        onTouchmove: onMousemove,
-        onTouchend: onMouseup,
-        width: props.cardWidth,
-        height: props.cardHeight,
-        ref: canvas
-      });
-      const children = [renderCanvas];
-      if (overlayLoaded.value)
-        children.unshift(renderContent);
-      return h("div", { style: styleConcat(styleSize.value) }, children);
+    return E(() => {
+      var i;
+      const n = (i = c.value) == null ? void 0 : i.getContext("2d");
+      if (!n)
+        throw Error(
+          `can't start a CanvasRenderingContext2D from ${c.value}`
+        );
+      u.value = n, f.onload = P;
+    }), H(
+      () => e.forceReveal,
+      (n) => n && w()
+    ), () => {
+      const n = t.default;
+      if (!n) throw Error("please pass a default content slot");
+      const i = m(
+        "div",
+        { style: y(I) },
+        n()
+      ), d = [m("canvas", {
+        style: y(I),
+        onMousedown: C,
+        onMousemove: b,
+        onMouseup: x,
+        onTouchstart: C,
+        onTouchmove: b,
+        onTouchend: x,
+        width: e.cardWidth,
+        height: e.cardHeight,
+        ref: c
+      })];
+      return o.value && d.unshift(i), m("div", { style: y(r.value) }, d);
     };
   }
-});
-var index = {
-  install(app) {
-    app.component("vue-scratchcard", ScratchCard);
+}), k = {
+  install(e) {
+    e.component("vue-scratchcard", $);
   }
 };
-export { index as default };
+export {
+  k as default
+};

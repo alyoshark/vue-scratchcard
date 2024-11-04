@@ -127,6 +127,11 @@ Just as explained in [this post](http://michaelnthiessen.com/force-re-render/).
 
 ## Change Log:
 
+### 2.0.0 - 2024-11-04
+
+- Actually it's long rewritten but just forgot to publish...
+- Should be a compatible rewrite in Vue 3
+
 ### [1.2.0] - 2019-05-04
 
 - `@complete` event for cover revelation (by [NahroTo](https://github.com/NahroTo))
